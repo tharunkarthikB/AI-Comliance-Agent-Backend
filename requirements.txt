@@ -5,3 +5,16 @@ pytesseract
 google-generativeai
 Pillow
 python-decouple
+Core Web Framework
+fastapi
+uvicorn[standard]
+
+Environment variables
+python-dotenv
+
+AI & OCR Libraries
+pytesseract
+Pillow
+openai
+google-generativeai # Keeping this in case you switch back
+
