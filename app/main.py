@@ -14,9 +14,8 @@ from openai import OpenAI
 # --- Environment Setup ---
 load_dotenv()
 
-# --- FIX: Explicitly set the Tesseract command path for Windows ---
-# This line tells the script exactly where to find the Tesseract program.
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# The Windows-specific Tesseract path has been removed.
+# The Dockerfile handles the Tesseract installation on the live server.
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
@@ -81,4 +80,3 @@ async def upload_invoice(invoice_file: UploadFile = File(...)):
         # Final Step: Clean up the temporary file
         if file_path and os.path.exists(file_path):
             os.remove(file_path)
-
