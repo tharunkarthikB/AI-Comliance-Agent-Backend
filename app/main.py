@@ -24,7 +24,7 @@ app = FastAPI(title="AI Compliance Assistant API")
 # --- FIX: ADD THE NEW VERCEL URL TO THE LIST OF ALLOWED ORIGINS ---
 origins = [
     "http://localhost:5173",  # For local development
-    "https://ai-compliance-agent-pr1du5abg-tks-projects-c34b12e1.vercel.app", # Your NEW live frontend
+    "https://ai-compliance-agent-l20hme573-tks-projects-c34b12e1.vercel.app/", # Your NEW live frontend
 ]
 
 app.add_middleware(
