@@ -25,7 +25,19 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 app = FastAPI(title="AI Compliance Assistant API (OCR.Space variant)")
 
 # IMPORTANT: FRONTEND_URL must not contain a trailing slash
-origins = [FRONTEND_URL, "http://localhost:5173"]
+origins = [
+    "http://localhost:5173",
+    "https://ai-compliance-agent-6x5opqcnt-tks-projects-c34b12e1.vercel.app",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.add_middleware(
     CORSMiddleware,
