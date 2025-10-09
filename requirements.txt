@@ -12,3 +12,4 @@ pytesseract
 Pillow
 openai
 google-generativeai
+requests
