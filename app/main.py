@@ -13,10 +13,6 @@ from openai import OpenAI
 
 # --- Environment Setup ---
 load_dotenv()
-
-# The Windows-specific Tesseract path has been removed.
-# The Dockerfile handles the Tesseract installation on the live server.
-
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("CRITICAL ERROR: OPENAI_API_KEY not found in .env file.")
@@ -24,15 +20,27 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 # --- FastAPI App Initialization ---
 app = FastAPI(title="AI Compliance Assistant API")
+
+# --- FIX: Configure CORS for Production ---
+# This tells your backend to accept requests from your live frontend URL.
+origins = [
+    "http://localhost:5173",  # For local development
+    "https://ai-compliance-agent-pr1du5abg-tks-projects-c34b12e1.vercel.app", # Your live frontend
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
+    allow_origins=origins, 
+    allow_credentials=True, 
+    allow_methods=["*"], 
+    allow_headers=["*"],
 )
+
 TEMP_DIR = "temp_uploads"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 
-# --- API Endpoint with Enhanced Error Return ---
+# --- API Endpoint ---
 @app.post("/api/upload-invoice/")
 async def upload_invoice(invoice_file: UploadFile = File(...)):
     file_path = None
@@ -66,7 +74,6 @@ async def upload_invoice(invoice_file: UploadFile = File(...)):
         return {"status": "Completed", "error": None, "data": extracted_data}
 
     except Exception as e:
-        # Send the full error traceback to the frontend
         full_traceback = traceback.format_exc()
         print(f"ERROR: {full_traceback}") 
         sys.stdout.flush()
@@ -77,6 +84,6 @@ async def upload_invoice(invoice_file: UploadFile = File(...)):
         }
 
     finally:
-        # Final Step: Clean up the temporary file
         if file_path and os.path.exists(file_path):
             os.remove(file_path)
+
