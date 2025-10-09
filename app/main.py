@@ -21,11 +21,10 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 # --- FastAPI App Initialization ---
 app = FastAPI(title="AI Compliance Assistant API")
 
-# --- FIX: Configure CORS for Production ---
-# This tells your backend to accept requests from your live frontend URL.
+# --- FIX: ADD THE NEW VERCEL URL TO THE LIST OF ALLOWED ORIGINS ---
 origins = [
     "http://localhost:5173",  # For local development
-    "https://ai-compliance-agent-pr1du5abg-tks-projects-c34b12e1.vercel.app", # Your live frontend
+    "https://ai-compliance-agent-ec9i6h7k9-tks-projects-c34b12e1.vercel.app", # Your NEW live frontend
 ]
 
 app.add_middleware(
@@ -86,4 +85,3 @@ async def upload_invoice(invoice_file: UploadFile = File(...)):
     finally:
         if file_path and os.path.exists(file_path):
             os.remove(file_path)
-
